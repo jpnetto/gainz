@@ -24,8 +24,6 @@ const CheckBox = ({ label, checked, onPress }) => {
 export default function Home() {
 
     const [days, setDays] = useState(1);
-    const [focus, setFocus] = useState('');
-    const [objective, setObjective] = useState('');
     const [loading, setLoading] = useState(false);
     const initialCheckboxStates1 = Array(8).fill(false);
     const initialCheckboxStates2 = Array(6).fill(false);
@@ -37,31 +35,27 @@ export default function Home() {
     async function handleGenerate(){
 
         setLoading(true);
-
+        
+        let prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana.`;
         
         const selectedMuscles = labels1.filter((_, index) => checkboxStates1[index]);
-        console.log(selectedMuscles)
-        
         const selectedObjetives = labels2.filter((_, index) => checkboxStates2[index]);
-        console.log(selectedObjetives)
+        console.log(selectedMuscles.length)
+        console.log(selectedObjetives.length)
 
-        const prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days} vezes na semana.`;
+        if(selectedMuscles.length > 0){
+            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}.`
 
-        if(selectedMuscles.length() != 0){
-            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}.`
-
-        }
-
-        if(selectedObjetives.length() != 0){
-            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days} vezes na semana, o treino deve ter como objetivo: ${selectedObjetives}.`
+        }else if(selectedObjetives.length > 0){
+            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve ter como objetivo: ${selectedObjetives}.`
 
         }
 
-        if(selectedMuscles.length() != 0 && selectedObjetives.length() != 0){
-            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}. Além disso, o treino deve ter como objetivo: ${selectedObjetives}.`
+        if(selectedMuscles.length > 0 && selectedObjetives.length > 0){
+            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}. Além disso, o treino deve ter como objetivo: ${selectedObjetives}.`
 
         }
-
+        console.log("here")
         try {
             const result = await fetch(
               `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
@@ -79,7 +73,7 @@ export default function Home() {
             );
       
             const data = await result.json();
-            console.log("first")
+            console.log(data)
             setTrainingRoutine(data.candidates[0].content.parts[0].text);
             setShowTrain(true)
           } catch (err) {
