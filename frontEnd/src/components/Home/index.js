@@ -3,10 +3,13 @@ import { StatusBar } from 'expo-status-bar';
 import Toast from "react-native-toast-message";
 import { ActivityIndicator, StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Slider from '@react-native-community/slider'
+import * as Clipboard from 'expo-clipboard';
 import { styles } from "./styles";
 import toast from "../../constants/toast";
+import { API_KEY } from '@env';
 
-const apiKey = "AIzaSyAzViHBqVBe3txIUZJfyauX72xxgPNrl9U"
+const apiKey = API_KEY;
+
 
 
 
@@ -36,26 +39,24 @@ export default function Home() {
 
         setLoading(true);
         
-        let prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana.`;
+        let prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana.  Ao escrever, seja mais conciso, trabalhando apenas com os tópicos do exercícios`;
         
         const selectedMuscles = labels1.filter((_, index) => checkboxStates1[index]);
         const selectedObjetives = labels2.filter((_, index) => checkboxStates2[index]);
-        console.log(selectedMuscles.length)
-        console.log(selectedObjetives.length)
 
         if(selectedMuscles.length > 0){
-            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}.`
-
+            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}. Ao escrever, seja mais conciso, trabalhando apenas com os tópicos do exercícios`
+            
         }else if(selectedObjetives.length > 0){
             prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve ter como objetivo: ${selectedObjetives}.`
-
+            
         }
 
         if(selectedMuscles.length > 0 && selectedObjetives.length > 0){
-            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}. Além disso, o treino deve ter como objetivo: ${selectedObjetives}.`
-
+            prompt = `Faça um treino de academia para uma pessoa que pode treinar ${days.toFixed(0)} vezes na semana, o treino deve dar ênfase aos seguintes músculos: ${selectedMuscles}. Além disso, o treino deve ter como objetivo: ${selectedObjetives}. Ao escrever, seja mais conciso, trabalhando apenas com os tópicos do exercícios`
+            
         }
-        console.log("here")
+        
         try {
             const result = await fetch(
               `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
@@ -85,9 +86,16 @@ export default function Home() {
 
     }
 
+    const copyToClipboard = async () => {
+        await Clipboard.setStringAsync(trainingRoutine);
+        toast.blankSuccessToast("Muito Bem!", "O seu treino foi copiado para a área de transferência!")
+    };
+
     const handleBack = () => {
         setShowTrain(false)
         setTrainingRoutine("")
+        setCheckboxStates1(initialCheckboxStates1);
+        setCheckboxStates2(initialCheckboxStates2);
     };
 
     const handlePress1 = (index) => {
@@ -127,10 +135,10 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <View style={styles.titleView}>
-            <Image
-                style={styles.logo}
-                source={require("./assets/gainz.png")}
-            ></Image>
+                <Image
+                    style={styles.logo}
+                    source={require("./assets/gainz.png")}
+                ></Image>
             </View>
             <View style={styles.workView}>
                 <View style={styles.questionsView}>
@@ -216,7 +224,7 @@ export default function Home() {
                                     ></Image>
                                 </TouchableOpacity>
                                 <Text style={styles.trainTitle}>SEU TREINO</Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={copyToClipboard}>
                                     <Image
                                         style={styles.voltar}
                                         source={require("./assets/documentos.png")}

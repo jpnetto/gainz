@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
         resizeMode: "contain",
         height: 170,
         width: 270,
+        marginTop: "12%",
     },
 
     voltar: {
@@ -23,18 +24,20 @@ export const styles = StyleSheet.create({
     },
 
     titleView: {
-        height: "25%",
+        height: "20%",
         width: "100%",
         backgroundColor: '#D7D9CE',
         alignItems: 'center',
         justifyContent: "center",
+    
     },
 
     workView: {
-        height: "75%",
+        height: "80%",
         width: "100%",
         backgroundColor: '#D7D9CE',
         alignItems: 'center',
+        paddingTop: "10%"
     },
 
     respMenuView: {
@@ -42,12 +45,12 @@ export const styles = StyleSheet.create({
         paddingRight: "5%",
         flexDirection: "row",
         justifyContent: "space-between",
-        height: "4%",
+        height: "8%",
         width: "100%",
     },
 
     questionsView: {
-        height: "90%",
+        height: "95%",
         width: "90%",
         paddingTop: "5%",
         backgroundColor: '#D7D9CE',
@@ -109,6 +112,7 @@ export const styles = StyleSheet.create({
     },
 
     trainText: {
+        marginTop: "2%",
         marginLeft: "5%",
         marginRight: "5%",
         color: "#000",
