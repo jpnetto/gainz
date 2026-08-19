@@ -4,6 +4,12 @@ Gainz is a React Native (Expo) app that generates a personalized gym workout on 
 
 > **Note:** I built this as a focused learning project to understand how to integrate a generative AI API into a mobile app end to end: prompt construction, request handling, and rendering the result in the UI. It wasn't built for production, and a few trade-offs reflect that scope on purpose. See **Known limitations** for what that means in practice, and why each one is there.
 
+<p align="center">
+  <img src="docs/menuOpcoes.jpeg" alt="Home screen: workout selection" width="45%">
+  &nbsp;&nbsp;
+  <img src="docs/menuTreino.jpeg" alt="Generated workout routine" width="45%">
+</p>
+
 ## The problem
 
 Generic workout plans rarely account for how many days someone can actually train or what they're specifically trying to achieve, and putting together a routine from scratch requires knowledge most people don't have starting out. Gainz reduces that to three quick inputs (frequency, muscle focus, goal) and lets a language model handle the actual programming, returning something tailored in seconds instead of requiring the user to research it themselves.
